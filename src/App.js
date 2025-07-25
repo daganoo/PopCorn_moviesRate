@@ -172,6 +172,7 @@ function Movie({ movie }) {
       )}
     </div>
   );
+
 }*/
 
 function Summary({ watched }) {
