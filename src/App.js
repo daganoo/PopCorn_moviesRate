@@ -49,22 +49,49 @@ const tempWatchedData = [
 
 const average = (arr) =>
   arr.reduce((acc, cur, i, arr) => acc + cur / arr.length, 0);
-const KEY = "80f7b8b"
+const KEY = "80f7b8b";
 
 export default function App() {
   const [movies, setMovies] = useState([]);
   const [watched, setWatched] = useState([]);
-  const query = "interstellar"
+  const [isLoading, setIsLoading] = useState(false);
+  const query = "haut";
+  const [error, setError] = useState("");
 
-  useEffect(function(){
+  useEffect(function () {
     async function fetchMovie() {
-      const res = await fetch(`https://www.omdbapi.com/?s=${query}&apikey=${KEY}`)
-      const data = await res.json()
-      setMovies(data.Search)
-      console.log(data.Search)
+      try {
+        setIsLoading(true);
+        const res = await fetch(
+          `https://www.omdbapi.com/?s=${query}&apikey=${KEY}`
+        );
+        if (!res.ok) {
+          throw new Error("Something went wrong with fetching data")
+        }
+        const data = await res.json();
+
+        if (data.Response ==="False") {
+          throw new Error("Movie not found");
+        }
+        setMovies(data.Search);
+        //setIsLoading(false);
+      } 
+      catch (err) {
+        console.error(err.message);
+        if (err.message === "Failed to fetch") {
+          setError("Network error: Could not connect to the server.");
+        } else {
+          setError(err.message);
+        }
+      }finally{
+        setIsLoading(false);
+      }
+      
     }
-    fetchMovie()
-  }, [])
+    fetchMovie();
+  }, []);
+
+  //ErrorMessage
 
   return (
     <>
@@ -76,10 +103,13 @@ export default function App() {
 
       <Main>
         <Box>
-          <MovieList movies={movies} />
+          {isLoading && <Loader />}
+          {!isLoading && error === "" && <MovieList movies={movies} />}
+
+          {error && <ErrorMessage msg={error} />}
         </Box>
         <Box>
-          <Summary watched={watched}/>
+          <Summary watched={watched} />
           <WatchedMovieList watched={watched} />
         </Box>
       </Main>
@@ -87,6 +117,9 @@ export default function App() {
   );
 }
 
+function ErrorMessage({ msg }) {
+  return <p className="error"> {msg}</p>;
+}
 //Navbar
 
 function NavBar({ children }) {
@@ -126,17 +159,19 @@ function NumResults({ movies }) {
 function Main({ children }) {
   return <main className="main">{children}</main>;
 }
+function Loader() {
+  return <p className="loader">Loading...</p>;
+}
 
 function Box({ movies, children }) {
   const [isOpen, setIsOpen] = useState(true);
-  
 
   return (
     <div className="box">
       <button className="btn-toggle" onClick={() => setIsOpen((open) => !open)}>
         {isOpen ? "–" : "+"}
       </button>
-      {isOpen && children }
+      {isOpen && children}
     </div>
   );
 }
@@ -221,7 +256,7 @@ function WatchedMovieList({ watched }) {
   return (
     <ul className="list">
       {watched.map((movie) => (
-        <WatchedMovie movie={movie} key={movie.imdbID}/>
+        <WatchedMovie movie={movie} key={movie.imdbID} />
       ))}
     </ul>
   );
