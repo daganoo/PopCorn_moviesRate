@@ -55,41 +55,46 @@ export default function App() {
   const [movies, setMovies] = useState([]);
   const [watched, setWatched] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
-  const query = "haut";
+  //const query = "haut";
   const [error, setError] = useState("");
+  const [query, setQuery] = useState("");
 
-  useEffect(function () {
-    async function fetchMovie() {
-      try {
-        setIsLoading(true);
-        const res = await fetch(
-          `https://www.omdbapi.com/?s=${query}&apikey=${KEY}`
-        );
-        if (!res.ok) {
-          throw new Error("Something went wrong with fetching data")
+  useEffect(
+    function () {
+      async function fetchMovie() {
+        if (query.length < 3) {
+          setError("");
+          setMovies([]);
+          return;
         }
-        const data = await res.json();
+        try {
+          setIsLoading(true);
+          setError("");
+          const res = await fetch(
+            `https://www.omdbapi.com/?s=${query}&apikey=${KEY}`
+          );
+          if (!res.ok) {
+            throw new Error("Something went wrong with fetching data");
+          }
+          const data = await res.json();
 
-        if (data.Response ==="False") {
-          throw new Error("Movie not found");
-        }
-        setMovies(data.Search);
-        //setIsLoading(false);
-      } 
-      catch (err) {
-        console.error(err.message);
-        if (err.message === "Failed to fetch") {
-          setError("Network error: Could not connect to the server.");
-        } else {
+          if (data.Response === "False") {
+            throw new Error("Movie not found");
+          }
+          setMovies(data.Search);
+        } catch (err) {
+          console.error(err.message);
+
           setError(err.message);
+        } finally {
+          setIsLoading(false);
         }
-      }finally{
-        setIsLoading(false);
+        
       }
-      
-    }
-    fetchMovie();
-  }, []);
+      fetchMovie();
+    },
+    [query]
+  );
 
   //ErrorMessage
 
@@ -97,7 +102,7 @@ export default function App() {
     <>
       <NavBar>
         <Logo />
-        <Search />
+        <Search setQuery={setQuery} query={query} />
         <NumResults movies={movies} />
       </NavBar>
 
@@ -134,8 +139,7 @@ function Logo() {
   );
 }
 
-function Search() {
-  const [query, setQuery] = useState("");
+function Search({ setQuery, query }) {
   return (
     <input
       className="search"
