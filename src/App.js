@@ -15,7 +15,7 @@ export default function App() {
 
   const [watched, setWatched] = useState(function () {
     const storedWatched = localStorage.getItem("watched");
-    return JSON.parse(storedWatched);
+    return storedWatched ? JSON.parse(storedWatched) : [];
   });
 
   /*
@@ -382,6 +382,15 @@ function MovieDetails({ selectedId, onCloseMovie, onAddWatched, watched }) {
 }
 
 function WatchedSummary({ watched }) {
+  if (!watched || watched.length === 0) {
+    return (
+      <div className="summary">
+        <h2>Movies you watched</h2>
+        <p>No movies watched yet. Start searching for movies!</p>
+      </div>
+    );
+  }
+
   const avgImdbRating = average(watched.map((movie) => movie.imdbRating));
   const avgUserRating = average(watched.map((movie) => movie.userRating));
   const avgRuntime = average(watched.map((movie) => movie.runtime));
@@ -412,6 +421,10 @@ function WatchedSummary({ watched }) {
 }
 
 function WatchedMoviesList({ watched, onDeleteWatched }) {
+  if (!watched || watched.length === 0) {
+    return null;
+  }
+
   return (
     <ul className="list">
       {watched.map((movie) => (
