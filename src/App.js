@@ -129,7 +129,7 @@ function Search({ query, setQuery }) {
 function NumResults({ movies }) {
     return (
         <p className="num-results">
-            Found <strong>{movies.length}</strong> results
+            Found <strong>{movies.length}</strong> Results
         </p>
     );
 }
@@ -327,7 +327,7 @@ function MovieDetails({ selectedId, onCloseMovie, onAddWatched, watched }) {
                             <p>{genre}</p>
                             <p>
                                 <span>⭐️</span>
-                                {imdbRating} IMDb rating
+                                {imdbRating} IMDb Rating
                             </p>
                         </div>
                     </header>
@@ -378,11 +378,11 @@ function WatchedSummary({ watched }) {
 
     return (
         <div className="summary">
-            <h2>Movies you watched</h2>
+            <h2>Movies You Watched</h2>
             <div>
                 <p>
                     <span>#️⃣</span>
-                    <span>{watched.length} movies</span>
+                    <span>{watched.length} Movies</span>
                 </p>
                 <p>
                     <span>⭐️</span>
@@ -394,7 +394,7 @@ function WatchedSummary({ watched }) {
                 </p>
                 <p>
                     <span>⏳</span>
-                    <span>{avgRuntime} min</span>
+                    <span>{avgRuntime} Min</span>
                 </p>
             </div>
         </div>
