@@ -9,8 +9,6 @@ export function useMovies(query) {
 
   useEffect(
     function () {
-      // callback?.();
-
       const controller = new AbortController();
 
       async function fetchMovies() {
@@ -27,7 +25,16 @@ export function useMovies(query) {
             throw new Error("Something went wrong with fetching movies");
 
           const data = await res.json();
-          if (data.Response === "False") throw new Error("Movie not found");
+          
+          // Handle API errors properly
+          if (data.Response === "False") {
+            // Check if it's a rate limit error
+            if (data.Error && data.Error.includes("limit")) {
+              throw new Error("Request limit reached! Please try again later.");
+            }
+            // Other API errors (e.g., "Movie not found")
+            throw new Error(data.Error || "Movie not found");
+          }
 
           setMovies(data.Search);
           setError("");
@@ -47,9 +54,13 @@ export function useMovies(query) {
         return;
       }
 
-      fetchMovies();
+      // Debounce: wait 500ms after user stops typing before making API call
+      const timeoutId = setTimeout(() => {
+        fetchMovies();
+      }, 500);
 
       return function () {
+        clearTimeout(timeoutId);
         controller.abort();
       };
     },
