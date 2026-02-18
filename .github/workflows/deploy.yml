@@ -35,5 +35,11 @@ jobs:
         run: |
           aws s3 sync build/ s3://${{ secrets.AWS_S3_BUCKET }} --delete
       
+      - name: Invalidate CloudFront cache
+        run: |
+          aws cloudfront create-invalidation \
+            --distribution-id ${{ secrets.CLOUDFRONT_DISTRIBUTION_ID }} \
+            --paths "/*"
+      
       - name: Deployment successful
-        run: echo "🚀 Deployment completed successfully!"
+        run: echo "🚀 Deployment completed successfully to S3 and CloudFront!"
