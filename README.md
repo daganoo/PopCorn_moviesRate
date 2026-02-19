@@ -4,8 +4,7 @@
 
 [![Live Demo](https://img.shields.io/badge/demo-live-success?style=for-the-badge)](https://d31lnk1d97vqkv.cloudfront.net/)
 [![GitHub](https://img.shields.io/badge/github-repository-blue?style=for-the-badge&logo=github)](https://github.com/daganoo/PopCorn_moviesRate)
-[![AWS](https://img.shields.io/badge/AWS-Deployed-orange?style=for-the-badge&logo=amazon-aws)](https://aws.amazon.com/)
-[![CI/CD](https://img.shields.io/badge/CI%2FCD-GitHub%20Actions-2088FF?style=for-the-badge&logo=github-actions)](https://github.com/features/actions)
+
 
 ![Project Banner](./docs/banner.png)
 *Screenshot placeholder - Add your app screenshot here*
@@ -111,64 +110,23 @@ PopCorn Movies is a cloud-native movie discovery platform that demonstrates mode
 ---
 
 ## 🏗️ Architecture
-
-### System Architecture Diagram
-
+```mermaid
+flowchart LR
+    A[👨‍💻 Developer] -->|git push| B[🔄 GitHub Actions]
+    B -->|build| C[📦 Build React App]
+    C -->|deploy| D[☁️ AWS S3]
+    D -->|origin| E[🌐 CloudFront CDN]
+    E -->|HTTPS| F[👥 Global Users]
+    F -.->|API calls| G[🎬 OMDb API]
+    
+    style A fill:#e1f5ff,stroke:#01579b,stroke-width:2px
+    style B fill:#fff3e0,stroke:#e65100,stroke-width:2px
+    style C fill:#fff3e0,stroke:#e65100,stroke-width:2px
+    style D fill:#ff9800,stroke:#e65100,stroke-width:2px
+    style E fill:#ff9800,stroke:#e65100,stroke-width:2px
+    style F fill:#4caf50,stroke:#2e7d32,stroke-width:2px
+    style G fill:#9c27b0,stroke:#6a1b9a,stroke-width:2px
 ```
-┌──────────────────────────────────────────────────────────────────┐
-│                         DEVELOPER                                │
-│                    (Local Development)                           │
-└────────────────────────┬─────────────────────────────────────────┘
-                         │
-                         │ git push to main
-                         ↓
-┌──────────────────────────────────────────────────────────────────┐
-│                    GITHUB ACTIONS (CI/CD)                        │
-│  ┌──────────────┐  ┌──────────────┐  ┌────────────────────────┐  │
-│  │ 1. Checkout  │→ │ 2. npm build │→ │ 3. Deploy to S3        │  │
-│  │    Code      │  │   Production │  │    Sync files          │  │
-│  └──────────────┘  └──────────────┘  └────────────────────────┘  │
-│                                       ┌────────────────────────┐ │
-│                                       │ 4. Invalidate Cache    │ │
-│                                       │    CloudFront          │ │
-│                                       └────────────────────────┘ │
-└────────────────────────┬─────────────────────────────────────────┘
-                         │
-                         ↓
-        ┌────────────────────────────────────┐
-        │         AWS S3 BUCKET              │
-        │      (Origin - Paris Region)       │
-        │   - Static HTML/CSS/JS files       │
-        │   - Images and assets              │
-        │   - Website endpoint enabled       │
-        └────────────┬───────────────────────┘
-                     │
-                     ↓
-        ┌────────────────────────────────────┐
-        │       AWS CLOUDFRONT CDN           │
-        │   (400+ Global Edge Locations)     │
-        │                                    │
-        │  ┌──────────┐  ┌──────────┐        │
-        │  │  Tokyo   │  │  London  │        │
-        │  │  Edge    │  │  Edge    │  ...   │
-        │  └──────────┘  └──────────┘        │
-        │                                    │
-        │  Features:                         │
-        │  - HTTPS encryption (SSL/TLS)      │
-        │  - Intelligent caching             │
-        │  - Error page handling (SPA)       │
-        │  - Gzip/Brotli compression         │
-        └────────────┬───────────────────────┘
-                     │
-                     ↓
-        ┌────────────────────────────────────┐
-        │      GLOBAL USERS                  │
-        │   🌍 Worldwide Access              │
-        │   ⚡ <200ms Response Time           │
-        │   🔒 Secure HTTPS Connection       │
-        └────────────────────────────────────┘
-```
-
 ### Request Flow
 
 1. **User Request**: User accesses `https://d31lnk1d97vqkv.cloudfront.net/`
