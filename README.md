@@ -313,13 +313,6 @@ jobs:
 
 **Average Global Load Time:** <200ms
 
-### Lighthouse Score
-
-- ⚡ Performance: 95+
-- ♿ Accessibility: 90+
-- ✅ Best Practices: 100
-- 🎯 SEO: 95+
-
 ---
 
 ## 📚 What I Learned
@@ -351,23 +344,6 @@ This project taught me valuable DevOps and cloud infrastructure skills:
 
 ---
 
-## 🔮 Future Enhancements
-
-**Infrastructure Improvements:**
-- [ ] Custom domain with Route 53
-- [ ] Infrastructure as Code (Terraform/CloudFormation)
-- [ ] Multi-environment setup (staging/production)
-- [ ] CloudWatch monitoring and alerts
-- [ ] Automated backups with S3 versioning
-
-**Application Features:**
-- [ ] User authentication with AWS Cognito
-- [ ] Serverless backend with Lambda
-- [ ] Database integration with DynamoDB
-- [ ] Real-time features with API Gateway WebSockets
-
----
-
 ## 📄 License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
@@ -378,7 +354,6 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 **Marouane Dagana**
 
-- 🌐 Portfolio: [yourportfolio.com](https://yourportfolio.com)
 - 💼 LinkedIn: [linkedin.com/in/yourprofile](https://linkedin.com/in/marouane-dagana-418832264)
 - 🐙 GitHub: [@daganoo](https://github.com/daganoo)
 - 📧 Email: marwan.dagana@gmail.com
