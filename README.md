@@ -5,7 +5,7 @@
 [![Live Demo](https://img.shields.io/badge/demo-live-success?style=for-the-badge)](https://d31lnk1d97vqkv.cloudfront.net/)
 [![GitHub](https://img.shields.io/badge/github-repository-blue?style=for-the-badge&logo=github)](https://github.com/daganoo/PopCorn_moviesRate)
 
-![App Banner](./docs/banner.png)
+![App Banner](./docs/bannerAPP.png)
 
 ---
 
@@ -38,13 +38,13 @@
 ## 🖼️ Application Screenshots
 
 ### Movie Search Interface
-![Main Interface](./docs/data-arrive.png)
+![Main Interface](./docs/data_arrive.png)
 
 ### Movie Details & Ratings
-![Movie Details](./docs/rate.png)
+![Movie Details](./docs/rate_movie.png)
 
 ### Error Handling
-![404 Error Page](./docs/filenotfound.png)
+![404 Error Page](./docs/file_not_found.png)
 
 ---
 
