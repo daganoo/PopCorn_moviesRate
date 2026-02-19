@@ -354,7 +354,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 **Marouane Dagana**
 
-- 💼 LinkedIn: [linkedin.com/in/yourprofile](https://linkedin.com/in/marouane-dagana-418832264)
+- 💼 LinkedIn: [linkedin.com/in/marouane-dagana](https://linkedin.com/in/marouane-dagana-418832264)
 - 🐙 GitHub: [@daganoo](https://github.com/daganoo)
 - 📧 Email: marwan.dagana@gmail.com
 
