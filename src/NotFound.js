@@ -13,7 +13,7 @@ export default function NotFound() {
                     The page you're looking for doesn't exist or has been moved.
                 </p>
                 <Link to="/" className="not-found-link">
-                    ← Back to usePopcorn
+                    ← Back to PopCorn
                 </Link>
             </div>
         </div>
