@@ -110,22 +110,108 @@ PopCorn Movies is a cloud-native movie discovery platform that demonstrates mode
 ---
 
 ## 🏗️ Architecture
-```mermaid
-flowchart LR
-    A[👨‍💻 Developer] -->|git push| B[🔄 GitHub Actions]
-    B -->|build| C[📦 Build React App]
-    C -->|deploy| D[☁️ AWS S3]
-    D -->|origin| E[🌐 CloudFront CDN]
-    E -->|HTTPS| F[👥 Global Users]
-    F -.->|API calls| G[🎬 OMDb API]
+```
+graph TB
+    subgraph Developer["👨‍💻 Developer Environment"]
+        DEV[Local Development<br/>React App]
+        GIT[Git Repository]
+    end
+
+    subgraph GitHub["🔄 GitHub (CI/CD)"]
+        PUSH[git push to main]
+        GA[GitHub Actions Workflow]
+        
+        subgraph Pipeline["Automated Pipeline"]
+            STEP1[1️⃣ Checkout Code]
+            STEP2[2️⃣ npm install]
+            STEP3[3️⃣ npm run build]
+            STEP4[4️⃣ Deploy to S3]
+            STEP5[5️⃣ Invalidate Cache]
+        end
+    end
+
+    subgraph AWS["☁️ AWS Cloud Infrastructure"]
+        subgraph Storage["Storage Layer"]
+            S3[AWS S3 Bucket<br/>eu-west-3 Paris<br/>Static Website Hosting]
+        end
+        
+        subgraph CDN["Content Delivery Network"]
+            CF[AWS CloudFront<br/>Global CDN]
+            
+            subgraph Edges["400+ Edge Locations"]
+                EDGE1[🌍 North America]
+                EDGE2[🌍 Europe]
+                EDGE3[🌍 Asia]
+                EDGE4[🌍 South America]
+                EDGE5[🌍 Australia]
+            end
+        end
+        
+        subgraph Security["Security & Access"]
+            IAM[AWS IAM<br/>Access Control]
+            ACM[AWS Certificate Manager<br/>SSL/TLS Certificates]
+        end
+    end
+
+    subgraph Users["👥 Global Users"]
+        USER1[User in Tokyo<br/>⚡ 50ms]
+        USER2[User in London<br/>⚡ 45ms]
+        USER3[User in New York<br/>⚡ 60ms]
+    end
+
+    subgraph API["🎬 External Services"]
+        OMDB[OMDb API<br/>Movie Database]
+    end
+
+    %% Development Flow
+    DEV -->|code changes| GIT
+    GIT -->|trigger| PUSH
+    PUSH --> GA
+    GA --> STEP1
+    STEP1 --> STEP2
+    STEP2 --> STEP3
+    STEP3 --> STEP4
+    STEP4 --> STEP5
+
+    %% Deployment Flow
+    STEP4 -->|sync files| S3
+    STEP5 -->|clear cache| CF
+    S3 -->|origin| CF
+
+    %% Security
+    IAM -.->|controls access| S3
+    IAM -.->|controls access| CF
+    ACM -.->|provides SSL| CF
+
+    %% CDN Distribution
+    CF --> EDGE1
+    CF --> EDGE2
+    CF --> EDGE3
+    CF --> EDGE4
+    CF --> EDGE5
+
+    %% User Access
+    EDGE1 --> USER1
+    EDGE2 --> USER2
+    EDGE1 --> USER3
+
+    %% API Calls
+    USER1 -.->|HTTPS requests| OMDB
+    USER2 -.->|HTTPS requests| OMDB
+    USER3 -.->|HTTPS requests| OMDB
+
+    %% Styling
+    classDef devStyle fill:#e1f5ff,stroke:#01579b,stroke-width:2px,color:#000
+    classDef githubStyle fill:#fff3e0,stroke:#e65100,stroke-width:2px,color:#000
+    classDef awsStyle fill:#fff8e1,stroke:#f57c00,stroke-width:2px,color:#000
+    classDef userStyle fill:#e8f5e9,stroke:#2e7d32,stroke-width:2px,color:#000
+    classDef securityStyle fill:#fce4ec,stroke:#c2185b,stroke-width:2px,color:#000
     
-    style A fill:#e1f5ff,stroke:#01579b,stroke-width:2px
-    style B fill:#fff3e0,stroke:#e65100,stroke-width:2px
-    style C fill:#fff3e0,stroke:#e65100,stroke-width:2px
-    style D fill:#ff9800,stroke:#e65100,stroke-width:2px
-    style E fill:#ff9800,stroke:#e65100,stroke-width:2px
-    style F fill:#4caf50,stroke:#2e7d32,stroke-width:2px
-    style G fill:#9c27b0,stroke:#6a1b9a,stroke-width:2px
+    class DEV,GIT devStyle
+    class PUSH,GA,STEP1,STEP2,STEP3,STEP4,STEP5 githubStyle
+    class S3,CF,EDGE1,EDGE2,EDGE3,EDGE4,EDGE5 awsStyle
+    class USER1,USER2,USER3 userStyle
+    class IAM,ACM securityStyle
 ```
 ### Request Flow
 
